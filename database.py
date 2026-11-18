@@ -18,10 +18,12 @@ for p in products:
         (p.name, p.price, p.quantity)
 )
     
+connection.commit()   
+    
 cursor.execute("SELECT * FROM products")
 for row in cursor.fetchall():
     print(row)
 
 
-connection.commit()
+
 connection.close()

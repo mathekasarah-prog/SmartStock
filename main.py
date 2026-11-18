@@ -1,6 +1,5 @@
 from product import products
 
-from product import products
 
 for p in products:
     p.info()
