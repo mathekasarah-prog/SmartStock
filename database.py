@@ -1,5 +1,5 @@
 import sqlite3
-#from product import products
+from product import products
 
 DB_NAME = "inventory.db"
 
@@ -18,6 +18,28 @@ def initialize_db():
             )
         """)
         connection.commit()
+    finally:
+        connection.close()
+        
+def load_sample_products():
+    connection = sqlite3.connect(DB_NAME)
+
+    try:
+        cursor = connection.cursor()
+
+        for product in products:
+            if product.is_valid():
+                cursor.execute(
+                    """
+                    INSERT OR IGNORE INTO products
+                    (name, price, quantity)
+                    VALUES (?, ?, ?)
+                    """,
+                    (product.name, product.price, product.quantity)
+                )
+
+        connection.commit()
+
     finally:
         connection.close()
         
@@ -77,6 +99,17 @@ def search_products(search_term):
         """, (f"%{search_term}%",))
 
         return cursor.fetchall()
+    finally:
+        connection.close()
+        
+def get_products():
+    connection = sqlite3.connect(DB_NAME)
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM products")
+        return cursor.fetchall()
+
     finally:
         connection.close()
 
