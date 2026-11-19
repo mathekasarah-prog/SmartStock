@@ -10,6 +10,10 @@ class Product:
         print(f"Price:Ksh {self.price}")
         print(f"Quantity: {self.quantity}")
         
+        
+    def add_product(name, price, quantity):
+        print(f"Adding {name} at ksh{price} {quantity} units to inventory...")
+        
 products = [
     Product("Shea Glow Body Butter", 950, 25),
     Product("African Black Soap", 650, 25),

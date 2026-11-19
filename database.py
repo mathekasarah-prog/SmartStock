@@ -1,17 +1,41 @@
 import sqlite3
-from product import products
+#from product import products
+
+DB_NAME = "inventory.db"
 
 
-connection = sqlite3.connect("inventory.db")
-cursor = connection.cursor()
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS products(
-    id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL UNIQUE,
-    price REAL NOT NULL,
-    quantity INTEGER NOT NULL DEFAULT 0
-)
-""")
+def initialize_db():
+    connection = sqlite3.connect(DB_NAME)
+    cursor = connection.cursor()
+    
+    try:
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS products(
+                id INTEGER PRIMARY KEY,
+                name TEXT NOT NULL UNIQUE,
+                price REAL NOT NULL,
+                quantity INTEGER NOT NULL DEFAULT 0
+            )
+        """)
+        connection.commit()
+    finally:
+        connection.close()
+        
+def add_product(name, price, quantity):
+    connection = sqlite3.connect(DB_NAME)
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute(
+            "INSERT INTO products (name, price, quantity) VALUES (?, ?, ?)",
+            (name, price, quantity)
+        )
+        connection.commit()
+    finally:
+        connection.close()
+        
+
+
 for p in products:
     cursor.execute(
         "INSERT OR IGNORE INTO products(name, price, quantity) VALUES (?,?,?)",
