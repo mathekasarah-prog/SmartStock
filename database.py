@@ -27,16 +27,20 @@ def load_sample_products():
     try:
         cursor = connection.cursor()
 
-        for product in products:
-            if product.is_valid():
-                cursor.execute(
-                    """
-                    INSERT OR IGNORE INTO products
-                    (name, price, quantity)
-                    VALUES (?, ?, ?)
-                    """,
-                    (product.name, product.price, product.quantity)
-                )
+        cursor.execute("SELECT COUNT(*) FROM products")
+        count = cursor.fetchone()[0]
+
+        # Only load sample products when the table is empty
+        if count == 0:
+            for product in products:
+                if product.is_valid():
+                    cursor.execute(
+                        """
+                        INSERT INTO products (name, price, quantity)
+                        VALUES (?, ?, ?)
+                        """,
+                        (product.name, product.price, product.quantity)
+                    )
 
         connection.commit()
 
