@@ -10,9 +10,22 @@ class Product:
         print(f"Price:Ksh {self.price}")
         print(f"Quantity: {self.quantity}")
         
-        
-    def add_product(name, price, quantity):
-        print(f"Adding {name} at ksh{price} {quantity} units to inventory...")
+    def is_valid(self):
+        if not isinstance(self.name, str) or not self.name.strip():
+            return False
+
+        if isinstance(self.price, bool) or not isinstance(self.price, (int, float)) or self.price <= 0:
+            return False
+
+        if isinstance(self.quantity, bool) or not isinstance(self.quantity, int) or self.quantity < 0:
+            return False
+
+        return True
+
+    def inventory_value(self):
+        return self.price * self.quantity
+
+
         
 products = [
     Product("Shea Glow Body Butter", 950, 25),

@@ -34,10 +34,7 @@ def add_product(name, price, quantity):
     finally:
         connection.close()
         
-cursor.execute(
-        "INSERT OR IGNORE INTO products(name, price, quantity) VALUES (?,?,?)",
-        (p.name, p.price, p.quantity)
-)
+
 def update_product(product_id, name, price, quantity):
     connection = sqlite3.connect(DB_NAME)
 
@@ -82,22 +79,5 @@ def search_products(search_term):
         return cursor.fetchall()
     finally:
         connection.close()
-1
 
 
-
-for p in products:
-    cursor.execute(
-        "INSERT OR IGNORE INTO products(name, price, quantity) VALUES (?,?,?)",
-        (p.name, p.price, p.quantity)
-)
-    
-connection.commit()   
-    
-cursor.execute("SELECT * FROM products")
-for row in cursor.fetchall():
-    print(row)
-
-
-
-connection.close()
